@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Track</title>
+  <!-- Adding Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Music Library</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="albums">Albums</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="artists">Artists</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="addalbum.html">Add Album </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="addTrack.html">Add Track</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="container mt-4">
+    <h1>Add Track</h1>
+    <form id="addTrackForm">
+      <div class="form-group">
+        <label for="trackTitle">Track Title</label>
+        <input type="text" class="form-control" id="trackTitle" required>
+      </div>
+      <div class="form-group">
+        <label for="albumId">Album ID</label>
+        <input type="number" class="form-control" id="albumId" required>
+      </div>      
+      <div class="form-group">
+        <label for="duration">Duration (in seconds)</label>
+        <input type="number" class="form-control" id="duration" required>
+      </div>
+      <div class="form-group">
+        <label for="number">Track Number</label>
+        <input type="number" class="form-control" id="number" required>
+      </div>
+      <div class="form-group">
+        <label for="videoUrl">Video URL</label>
+        <input type="url" class="form-control" id="videoUrl">
+      </div>
+      <div class="form-group">
+        <label for="lyrics">Lyrics</label>
+        <textarea class="form-control" id="lyrics" rows="3"></textarea>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Add Track</button>
+    </form>
+  </div>
+
+  <!-- Adding Bootstrap JS and its dependencies -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <!-- JavaScript to handle form submission -->
+  <script>
+    document.getElementById('addTrackForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+  
+      const title = document.getElementById('trackTitle').value;
+      const albumId = document.getElementById('albumId').value;
+      const duration = document.getElementById('duration').value;
+      const number = document.getElementById('number').value;
+      const videoUrl = document.getElementById('videoUrl').value;
+      const lyrics = document.getElementById('lyrics').value;
+  
+      const newArtist = { title, albumId: parseInt(albumId), duration: parseInt(duration), number: parseInt(number), videoUrl, lyrics };
+
+      console.log(newArtist);
+
+      try {
+        const response = await fetch('http://localhost:5000/api/artists', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newArtist)
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to add track');
+          console.error('Failed to add track:', response.status, responseBody);
+      alert(`Failed to add track. Status: ${response.status}. ${responseBody}`);
+      return;
+        }
+  
+        alert('Track added successfully');
+        window.location.href = 'index.html'; // Redirect to index page
+      } catch (error) {
+        console.error('Error adding track:', error);
+        alert('Failed to add track');
+      }
+    });
+  </script>
+  
+  
+</body>
+</html>

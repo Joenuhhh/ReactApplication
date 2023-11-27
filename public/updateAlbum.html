@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Album</title>
+  <!-- Adding Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Music Library</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="albums">Albums</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="artists">Artists</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="addalbum.html">Add Album</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="addTrack.html">Add Track</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div class="container mt-4">
+    <h1>Update Album</h1>
+    <form id="updateAlbumForm">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" required>
+      </div>
+      <div class="form-group">
+        <label for="artist">Artist</label>
+        <input type="text" class="form-control" id="artist" required>
+      </div>
+      <div class="form-group">
+        <label for="releaseYear">Release Year</label>
+        <input type="number" class="form-control" id="releaseYear" required>
+      </div>
+      <div class="form-group">
+        <label for="imageUrl">Image URL</label>
+        <input type="text" class="form-control" id="imageUrl">
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" rows="3"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+
+  <!-- Adding Bootstrap JS and its dependencies -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <!-- JavaScript to handle form submission -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const existingAlbum = {
+    title: 'Existing Album Title',
+    artist: 'Existing Artist',
+    releaseYear: 2022,
+    imageUrl: 'https://example.com/existing-image.jpg',
+    description: 'Existing Album Description',
+  };
+
+  // Select form input fields
+  const titleInput = document.getElementById('title');
+  const artistInput = document.getElementById('artist');
+  const releaseYearInput = document.getElementById('releaseYear');
+  const imageUrlInput = document.getElementById('imageUrl');
+  const descriptionInput = document.getElementById('description');
+
+  // Populate form fields with existing album data
+  titleInput.value = existingAlbum.title;
+  artistInput.value = existingAlbum.artist;
+  releaseYearInput.value = existingAlbum.releaseYear;
+  imageUrlInput.value = existingAlbum.imageUrl;
+  descriptionInput.value = existingAlbum.description;
+});
+
+    document.getElementById('updateAlbumForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      // Retrieve updated album information from the form
+      const title = document.getElementById('title').value;
+      const artist = document.getElementById('artist').value;
+      const releaseYear = document.getElementById('releaseYear').value;
+      const imageUrl = document.getElementById('imageUrl').value;
+      const description = document.getElementById('description').value;
+
+      // Create an object with the updated album data
+      const updatedAlbum = { title, artist, releaseYear, imageUrl, description };
+
+      // Send a request to update the album (you need to implement this endpoint)
+      try {
+        const response = await fetch('http://localhost:5000/api/updateAlbum', {
+          method: 'PUT', // Use PUT method for updates (you need to implement this in your server)
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedAlbum)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update album');
+        }
+
+        alert('Album updated successfully');
+        window.location.href = 'albums'; // Redirect to albums page after update
+      } catch (error) {
+        console.error('Error updating album:', error);
+        alert('Failed to update album');
+      }
+    });
+  </script>
+</body>
+</html>
